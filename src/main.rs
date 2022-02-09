@@ -26,7 +26,7 @@ async fn main() -> Result<(), Error> {
 	let (mut shoulderLDown,mut shoulderRDown) = (0.0,0.0);
 	let (mut thumbLStick,mut thumbRStick) = (0.0,0.0);
 
-//Token Shit (TODO: Error handling){{{
+//Connecting (TODO: Error handling){{{
 
 //fucked: Learn 2 error handle instead of just providing a empty ./token lmao
     let tokenPath = "./token";
