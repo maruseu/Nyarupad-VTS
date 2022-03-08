@@ -1,0 +1,97 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamPadOn",
+			"GroupId": "",
+			"Name": "PadOn"
+		},
+		{
+			"Id": "ParamRButtonDown",
+			"GroupId": "",
+			"Name": "RButtonDown"
+		},
+		{
+			"Id": "ParamLButtonDown",
+			"GroupId": "",
+			"Name": "LButtonDown"
+		},
+		{
+			"Id": "ParamRButtonPressed",
+			"GroupId": "",
+			"Name": "RButtonPressed"
+		},
+		{
+			"Id": "ParamLButtonPressed",
+			"GroupId": "",
+			"Name": "LButtonPressed"
+		},
+		{
+			"Id": "ParamRStickX",
+			"GroupId": "",
+			"Name": "RStickX"
+		},
+		{
+			"Id": "ParamRStickY",
+			"GroupId": "",
+			"Name": "RStickY"
+		},
+		{
+			"Id": "ParamLStickX",
+			"GroupId": "",
+			"Name": "LStickX"
+		},
+		{
+			"Id": "ParamLStickY",
+			"GroupId": "",
+			"Name": "LStickY"
+		},
+		{
+			"Id": "ParamThumbPosR",
+			"GroupId": "",
+			"Name": "ThumbPosR"
+		},
+		{
+			"Id": "ParamThumbPosL",
+			"GroupId": "",
+			"Name": "ThumbPosL"
+		},
+		{
+			"Id": "ParamR1",
+			"GroupId": "",
+			"Name": "R1"
+		},
+		{
+			"Id": "ParamR2",
+			"GroupId": "",
+			"Name": "R2"
+		},
+		{
+			"Id": "ParamRIndexDown",
+			"GroupId": "",
+			"Name": "RIndexDown"
+		},
+		{
+			"Id": "ParamL1",
+			"GroupId": "",
+			"Name": "L1"
+		},
+		{
+			"Id": "ParamL2",
+			"GroupId": "",
+			"Name": "L2"
+		},
+		{
+			"Id": "ParamLIndexDown",
+			"GroupId": "",
+			"Name": "LIndexDown"
+		}
+	],
+	"ParameterGroups": [],
+	"Parts": [
+		{
+			"Id": "PartController",
+			"Name": "Controller"
+		}
+	]
+}
