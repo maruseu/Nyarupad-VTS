@@ -63,6 +63,13 @@ async fn main() -> Result<(), Error> {
 //Create Parameters{{{
     if connVTS {
         let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_ON".to_string(), 
+            explanation: Some("Nyarupad ON".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
             parameter_name: "NP_LButtonDown".to_string(), 
             explanation: Some("Left side face buttons down".to_string()), 
             min: 0.0, 
@@ -353,6 +360,10 @@ LIndexDown: {}"
 		    	parameter_values: vec![ParameterValue{
 		    		id: "NP_LButtonDown".to_string(),
 		    		value: lfButtDown as f64,
+		    		weight: Some(1.0),
+		        }, ParameterValue{
+		    		id: "NP_ON".to_string(),
+		    		value: 1.0 as f64,
 		    		weight: Some(1.0),
 		        }, ParameterValue{
 		    		id: "NP_RButtonDown".to_string(),
