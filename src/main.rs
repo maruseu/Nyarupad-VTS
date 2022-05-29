@@ -22,10 +22,24 @@ async fn main() -> Result<(), Error> {
 	let funny_cr = "(c) 2022 Nyarusoft";
 	let connVTS = true;
 
+	let exEnable = true;
 	let mut smooth = 0.0;
     let (mut rfButtPress, mut lfButtPress) = (0.0,0.0);
+    let (
+		mut rfButtDownU, mut rfButtDownD, mut rfButtDownL, mut rfButtDownR,
+		mut lfButtDownU, mut lfButtDownD, mut lfButtDownL, mut lfButtDownR,
+		mut lfButtDownS, mut rfButtDownS
+	) = (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+    let (
+		mut rfButtPressU, mut rfButtPressD, mut rfButtPressL, mut rfButtPressR,
+		mut lfButtPressU, mut lfButtPressD, mut lfButtPressL, mut lfButtPressR,
+		mut lfButtPressS, mut rfButtPressS
+	) = (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
 	let (mut shoulderLDown,mut shoulderRDown) = (0.0,0.0);
 	let (mut thumbLStick,mut thumbRStick) = (0.0,0.0);
+	let (mut lThumbX, mut lThumbY, mut rThumbX, mut rThumbY) = (0.0,0.0,0.0,0.0);
+	let exWid = if exEnable {126 + 5 + 15/*126 == text::measure_text("RFaceRightPressed: 0.00", 10)*/} else {0};
+	let DrawX = 150 + exWid;
 
 //Connecting{{{
 
@@ -116,6 +130,34 @@ async fn main() -> Result<(), Error> {
             default_value: 0.0
         }).await?;
         let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LThumbX".to_string(), 
+            explanation: Some("Left Thumb X".to_string()), 
+            min: -1.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LThumbY".to_string(), 
+            explanation: Some("Left Thumb Y".to_string()), 
+            min: -1.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RThumbX".to_string(), 
+            explanation: Some("Right Thumb X".to_string()), 
+            min: -1.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RThumbY".to_string(), 
+            explanation: Some("Right Thumb Y".to_string()), 
+            min: -1.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
             parameter_name: "NP_LStickX".to_string(), 
             explanation: Some("Left Stick X".to_string()), 
             min: -1.0, 
@@ -185,6 +227,158 @@ async fn main() -> Result<(), Error> {
             max: 1.0, 
             default_value: 0.0
         }).await?;
+// FaceButtons{{{
+//Down
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceRightDown".to_string(), 
+            explanation: Some("Face buttons Right (Xbox B, PS Circle) Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceLeftDown".to_string(), 
+            explanation: Some("Face buttons Left (Xbox X, PS Square) Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceUpDown".to_string(), 
+            explanation: Some("Face buttons Up (Xbox Y, PS Triangle) Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceDownDown".to_string(), 
+            explanation: Some("Face buttons Down (Xbox A, PS Cross) Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+//Pressed
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceRightPressed".to_string(), 
+            explanation: Some("Face buttons Right (Xbox B, PS Circle) Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceLeftPressed".to_string(), 
+            explanation: Some("Face buttons Left (Xbox X, PS Square) Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceUpPressed".to_string(), 
+            explanation: Some("Face buttons Up (Xbox Y, PS Triangle) Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_RFaceDownPressed".to_string(), 
+            explanation: Some("Face buttons Down (Xbox A, PS Cross) Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+//}}}
+// DPAD{{{
+//Down
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceRightDown".to_string(), 
+            explanation: Some("DPad Right Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceLeftDown".to_string(), 
+            explanation: Some("DPad Left Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceUpDown".to_string(), 
+            explanation: Some("DPad Up Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceDownDown".to_string(), 
+            explanation: Some("DPad Down Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+//Pressed
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceRightPressed".to_string(), 
+            explanation: Some("DPad Right Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceLeftPressed".to_string(), 
+            explanation: Some("DPad Left Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceUpPressed".to_string(), 
+            explanation: Some("DPad Up Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_LFaceDownPressed".to_string(), 
+            explanation: Some("DPad Down Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+//}}}
+// Middle{{{
+//Down
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_SelectDown".to_string(), 
+            explanation: Some("Select button Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_StartDown".to_string(), 
+            explanation: Some("Start button Held".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+//Pressed
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_SelectPressed".to_string(), 
+            explanation: Some("Select button Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+        let resp = client.send(&ParameterCreationRequest {
+            parameter_name: "NP_StartPressed".to_string(), 
+            explanation: Some("Start button Pressed".to_string()), 
+            min: 0.0, 
+            max: 1.0, 
+            default_value: 0.0
+        }).await?;
+//}}}
         let resp = client.send(&ParameterCreationRequest {
             parameter_name: "NP_LIndexPos".to_string(), 
             explanation: Some("Outputs 1 When finger is on L2/LT/ZL".to_string()), 
@@ -203,12 +397,23 @@ async fn main() -> Result<(), Error> {
 //}}}
 
 //Raylib Init{{{
-	let width = 400;
-	let height = 300;
+	let width = 400 + exWid;
+	let height = 300 + 100 * if exEnable {1} else {0};
+
+//Workaround because raylib::core::WindowState::set_window_always_run doesn't work lmao
+	unsafe {
+        raylib::ffi::SetConfigFlags(ConfigFlags::FLAG_WINDOW_ALWAYS_RUN as u32);
+    }
+
 	let(mut rl, thread) = raylib::init()
 		.size(width, height)
 		.title(&format!("Nyarupad {}", C_VER))
 		.build();
+
+//Doesn't work idk why. Unsafe block before raylib::init is a workaround.
+//	rl.get_window_state().set_window_always_run(true);
+//	rl.set_window_state(rl.get_window_state());
+
 	if !connVTS {rl.set_target_fps(30)}
 //}}}
 
@@ -251,33 +456,57 @@ async fn main() -> Result<(), Error> {
 		smooth = 0.1 / rl.get_frame_time();
 
 // Face Button Down{{{
-		let mut rfButtDown = 0;
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP) { rfButtDown=rfButtDown+1;}
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN) { rfButtDown=rfButtDown+1;}
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT) { rfButtDown=rfButtDown+1;}
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT) { rfButtDown=rfButtDown+1;}
-		let mut lfButtDown = 0;
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP) { lfButtDown=lfButtDown+1;}
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN) { lfButtDown=lfButtDown+1;}
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT) { lfButtDown=lfButtDown+1;}
-		if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT) { lfButtDown=lfButtDown+1;}
+		rfButtDownS = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_RIGHT)   { 1.0 } else { 0.0 };
+
+		rfButtDownU = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP)   { 1.0 } else { 0.0 };
+		rfButtDownD = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN) { 1.0 } else { 0.0 };
+		rfButtDownL = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT) { 1.0 } else { 0.0 };
+		rfButtDownR = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT){ 1.0 } else { 0.0 };
+		let mut rfButtDown = rfButtDownU + rfButtDownD + rfButtDownL + rfButtDownR;
+		if rfButtDown >= 1.0 {
+			rThumbX = rfButtDownR - rfButtDownL;
+			rThumbY = rfButtDownU - rfButtDownD;
+		}
+		lfButtDownS = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_LEFT)   { 1.0 } else { 0.0 };
+
+		lfButtDownU = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP)   { 1.0 } else { 0.0 };
+		lfButtDownD = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN) { 1.0 } else { 0.0 };
+		lfButtDownL = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT) { 1.0 } else { 0.0 };
+		lfButtDownR = if rl.is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT){ 1.0 } else { 0.0 };
+		let mut lfButtDown = lfButtDownU + lfButtDownD + lfButtDownL + lfButtDownR;
+		if lfButtDown >= 1.0 {
+			lThumbX = lfButtDownR - lfButtDownL;
+			lThumbY = lfButtDownU - lfButtDownD;
+		}
 //}}}
 
 // Face Button Pressed{{{
 		rfButtPress += -rfButtPress/smooth;
 		lfButtPress += -lfButtPress/smooth;
-		if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_RIGHT) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_THUMB) { rfButtPress=1.0; thumbRStick = 0.0;}
-		if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_LEFT) ||
-           rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_THUMB) { lfButtPress=1.0; thumbLStick = 0.0;}
+		if exEnable {
+		rfButtPressU += -rfButtPressU/smooth;
+		rfButtPressD += -rfButtPressD/smooth;
+		rfButtPressL += -rfButtPressL/smooth;
+		rfButtPressR += -rfButtPressR/smooth;
+		lfButtPressU += -lfButtPressU/smooth;
+		lfButtPressD += -lfButtPressD/smooth;
+		lfButtPressL += -lfButtPressL/smooth;
+		lfButtPressR += -lfButtPressR/smooth;
+		rfButtPressS += -rfButtPressS/smooth;
+		lfButtPressS += -lfButtPressS/smooth;
+		}
+		if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP) { rfButtPress=1.0; rfButtPressU=1.0; thumbRStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN) { rfButtPress=1.0; rfButtPressD=1.0; thumbRStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT) { rfButtPress=1.0; rfButtPressL=1.0; thumbRStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT) { rfButtPress=1.0; rfButtPressR=1.0; thumbRStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_RIGHT) { rfButtPress=1.0; rfButtPressS=1.0; thumbRStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_THUMB) { rfButtPress=1.0; thumbRStick = 1.0;}
+		if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP) { lfButtPress=1.0; lfButtPressU=1.0; thumbLStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN) { lfButtPress=1.0; lfButtPressD=1.0; thumbLStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT) { lfButtPress=1.0; lfButtPressL=1.0; thumbLStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT) { lfButtPress=1.0; lfButtPressR=1.0; thumbLStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_LEFT) { lfButtPress=1.0; lfButtPressS=1.0; thumbLStick = 0.0;}
+        if rl.is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_THUMB) { lfButtPress=1.0; thumbLStick = 1.0;}
 //}}}
 
 // Stick Axis{{{
@@ -353,32 +582,187 @@ LIndexDown: {}"
 			, shoulderRDown
 			, shoulderLDown
 		), 5, 5, 10, Color::BLACK);
-	d.draw_texture(&t_RT,150,50 + (rAxisT*8.0) as i32,Color{r:(255.0*(1.0 - rAxisT)) as u8,g:(255.0*(1.0 - rAxisT)) as u8,b:(255.0*(1.0 - rAxisT)) as u8,a:255});
-	d.draw_texture(&t_LT,150,50 + (lAxisT*8.0) as i32,Color{r:(255.0*(1.0 - lAxisT)) as u8,g:(255.0*(1.0 - lAxisT)) as u8,b:(255.0*(1.0 - lAxisT)) as u8,a:255});
-	d.draw_texture(&t_LB,150,50 + if triggerL1 {2} else {0},if triggerL1 {Color::GRAY} else {Color::WHITE});
-	d.draw_texture(&t_RB,150,50 + if triggerR1 {2} else {0},if triggerR1 {Color::GRAY} else {Color::WHITE});
-	d.draw_texture(&t_C,150,50,Color::WHITE);
-	d.draw_texture(&t_DPB,150,50,Color{r:(255.0*(1.0 - lfButtPress)) as u8,g:(255.0*(1.0 - lfButtPress)) as u8,b:(255.0*(1.0 - lfButtPress)) as u8,a:255});
-	d.draw_texture(&t_DP,150,50,Color{r:(255.0/4.0*(4.0 - lfButtDown as f32)) as u8,g:(255.0/4.0*(4.0 - lfButtDown as f32)) as u8,b:(255.0/4.0*(4.0 - lfButtDown as f32)) as u8,a:255});
-	d.draw_texture(&t_FBB,150,50,Color{r:(255.0*(1.0 - rfButtPress)) as u8,g:(255.0*(1.0 - rfButtPress)) as u8,b:(255.0*(1.0 - rfButtPress)) as u8,a:255});
-	d.draw_texture(&t_FB,150,50,Color{r:(255.0/4.0*(4.0 - rfButtDown as f32)) as u8,g:(255.0/4.0*(4.0 - rfButtDown as f32)) as u8,b:(255.0/4.0*(4.0 - rfButtDown as f32)) as u8,a:255});
-	d.draw_texture(&t_SL,150 + (lAxisX*5.0) as i32,50 + (lAxisY * -1.0 *5.0) as i32,Color::WHITE);
-	d.draw_texture(&t_SR,150 + (rAxisX*5.0) as i32,50 + (rAxisY * -1.0 *5.0) as i32,Color::WHITE);
-	d.draw_texture(&t_Lind,150,50 + 10 * (1 - shoulderLDown as i32),Color::WHITE);
-	d.draw_texture(&t_Rind,150,50 + 10 * (1 - shoulderRDown as i32),Color::WHITE);
-	d.draw_texture(&t_LTH,150 + 28 * (1 - thumbLStick as i32),50 + 28 * (1 - thumbLStick as i32),Color::WHITE);
-	d.draw_texture(&t_RTH,150 - 28 * thumbRStick as i32,50 + 28 * thumbRStick as i32,Color::WHITE);
+		if exEnable {
+			let col2X=15+text::measure_text("RButtonPressed: 0.00", 10)+5;
+			d.draw_text(&format!(
+"
+
+RFaceUpDown: {}
+RFaceDownDown: {}
+RFaceLeftDown: {}
+RFaceRightDown: {}
+LFaceUpDown: {}
+LFaceDownDown: {}
+LFaceLeftDown: {}
+LFaceRightDown: {}
+RFaceUpPressed: {:.2}
+RFaceDownPressed: {:.2}
+RFaceLeftPressed: {:.2}
+RFaceRightPressed: {:.2}
+LFaceUpPressed: {:.2}
+LFaceDownPressed: {:.2}
+LFaceLeftPressed: {:.2}
+LFaceRightPressed: {:.2}
+SelectDown: {}
+StartDown: {}
+SelectPressed: {:.2}
+StartPressed: {:.2}
+RThumbX: {:.2}
+RThumbY: {:.2}
+LThumbX: {:.2}
+LThumbY: {:.2}
+"
+				, rfButtDownU
+				, rfButtDownD
+				, rfButtDownL
+				, rfButtDownR
+				, lfButtDownU
+				, lfButtDownD
+				, lfButtDownL
+				, lfButtDownR
+				, rfButtPressU
+				, rfButtPressD
+				, rfButtPressL
+				, rfButtPressR
+				, lfButtPressU
+				, lfButtPressD
+				, lfButtPressL
+				, lfButtPressR
+				, lfButtDownS
+				, rfButtDownS
+				, lfButtPressS
+				, rfButtPressS
+				, rThumbX
+				, rThumbY
+				, lThumbX
+				, lThumbY
+			), col2X, 5, 10, Color::BLACK);
+		}
+	d.draw_texture(&t_RT,DrawX,50 + (rAxisT*8.0) as i32,Color{r:(255.0*(1.0 - rAxisT)) as u8,g:(255.0*(1.0 - rAxisT)) as u8,b:(255.0*(1.0 - rAxisT)) as u8,a:255});
+	d.draw_texture(&t_LT,DrawX,50 + (lAxisT*8.0) as i32,Color{r:(255.0*(1.0 - lAxisT)) as u8,g:(255.0*(1.0 - lAxisT)) as u8,b:(255.0*(1.0 - lAxisT)) as u8,a:255});
+	d.draw_texture(&t_LB,DrawX,50 + if triggerL1 {2} else {0},if triggerL1 {Color::GRAY} else {Color::WHITE});
+	d.draw_texture(&t_RB,DrawX,50 + if triggerR1 {2} else {0},if triggerR1 {Color::GRAY} else {Color::WHITE});
+	d.draw_texture(&t_C,DrawX,50,Color::WHITE);
+	d.draw_texture(&t_DPB,DrawX,50,Color{r:(255.0*(1.0 - lfButtPress)) as u8,g:(255.0*(1.0 - lfButtPress)) as u8,b:(255.0*(1.0 - lfButtPress)) as u8,a:255});
+	d.draw_texture(&t_DP,DrawX,50,Color{r:(255.0/4.0*(4.0 - lfButtDown as f32)) as u8,g:(255.0/4.0*(4.0 - lfButtDown as f32)) as u8,b:(255.0/4.0*(4.0 - lfButtDown as f32)) as u8,a:255});
+	d.draw_texture(&t_FBB,DrawX,50,Color{r:(255.0*(1.0 - rfButtPress)) as u8,g:(255.0*(1.0 - rfButtPress)) as u8,b:(255.0*(1.0 - rfButtPress)) as u8,a:255});
+	d.draw_texture(&t_FB,DrawX,50,Color{r:(255.0/4.0*(4.0 - rfButtDown as f32)) as u8,g:(255.0/4.0*(4.0 - rfButtDown as f32)) as u8,b:(255.0/4.0*(4.0 - rfButtDown as f32)) as u8,a:255});
+	d.draw_texture(&t_SL,DrawX + (lAxisX*5.0) as i32,50 + (lAxisY * -1.0 *5.0) as i32,Color::WHITE);
+	d.draw_texture(&t_SR,DrawX + (rAxisX*5.0) as i32,50 + (rAxisY * -1.0 *5.0) as i32,Color::WHITE);
+	d.draw_texture(&t_Lind,DrawX,50 + 10 * (1 - shoulderLDown as i32),Color::WHITE);
+	d.draw_texture(&t_Rind,DrawX,50 + 10 * (1 - shoulderRDown as i32),Color::WHITE);
+	d.draw_texture(&t_LTH,DrawX + 28 * (1 - thumbLStick as i32),50 + 28 * (1 - thumbLStick as i32),Color::WHITE);
+	d.draw_texture(&t_RTH,DrawX - 28 * thumbRStick as i32,50 + 28 * thumbRStick as i32,Color::WHITE);
 
 	d.draw_text(funny_cr,width - text::measure_text(funny_cr, 10) - 5, height - 10 - 5, 10, Color::BLACK); 
+
 //}}}
 
 // Update Parameters{{{
+		        
+
         if connVTS {
 		    client.send(&InjectParameterDataRequest{
 		    	parameter_values: vec![ParameterValue{
 		    		id: "NP_LButtonDown".to_string(),
 		    		value: lfButtDown as f64,
 		    		weight: Some(1.0),
+					   }, ParameterValue{
+						id: "NP_LThumbX".to_string(),
+						value: lThumbX as f64,
+						weight: Some(1.0),
+					   }, ParameterValue{
+						id: "NP_LThumbY".to_string(),
+						value: lThumbY as f64,
+						weight: Some(1.0),
+					   }, ParameterValue{
+						id: "NP_RThumbX".to_string(),
+						value: rThumbX as f64,
+						weight: Some(1.0),
+					   }, ParameterValue{
+						id: "NP_RThumbY".to_string(),
+						value: rThumbY as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_SelectDown".to_string(), 
+						value: lfButtDownS as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_StartDown".to_string(), 
+						value: rfButtDownS as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_SelectPressed".to_string(), 
+						value: lfButtPressS as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_StartPressed".to_string(), 
+						value: rfButtPressS as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceRightPressed".to_string(), 
+						value: rfButtPressR as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceLeftPressed".to_string(), 
+						value: rfButtPressL as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceUpPressed".to_string(), 
+						value: rfButtPressU as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceDownPressed".to_string(), 
+						value: rfButtPressD as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceRightPressed".to_string(), 
+						value: lfButtPressR as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceLeftPressed".to_string(), 
+						value: lfButtPressL as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceUpPressed".to_string(), 
+						value: lfButtPressU as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceDownPressed".to_string(), 
+						value: lfButtPressD as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceRightDown".to_string(), 
+						value: rfButtDownR as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceLeftDown".to_string(), 
+						value: rfButtDownL as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceUpDown".to_string(), 
+						value: rfButtDownU as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_RFaceDownDown".to_string(), 
+						value: rfButtDownD as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceRightDown".to_string(), 
+						value: lfButtDownR as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceLeftDown".to_string(), 
+						value: lfButtDownL as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceUpDown".to_string(), 
+						value: lfButtDownU as f64,
+						weight: Some(1.0),
+					}, ParameterValue{
+						id: "NP_LFaceDownDown".to_string(), 
+						value: lfButtDownD as f64,
+						weight: Some(1.0),
 		        }, ParameterValue{
 		    		id: "NP_ON".to_string(),
 		    		value: 1.0 as f64,
