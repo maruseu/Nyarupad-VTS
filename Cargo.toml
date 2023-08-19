@@ -2,7 +2,7 @@
 name = "Nyarupad-VTS"
 version = "0.3.0"
 edition = "2021"
-authors = ["Maruseu (@nyaruseu)"]
+authors = ["https://maruseu.moe"]
 [dependencies]
 anyhow = "1.0.47"
 directories = "4.0.1"
@@ -17,3 +17,5 @@ tracing = "0.1.29"
 tracing-subscriber = "0.3.1"
 vtubestudio = "0.5.0"
 raylib = "3.7.0"
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"
