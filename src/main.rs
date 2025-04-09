@@ -14,7 +14,6 @@ use once_cell::sync::OnceCell;
 use serde::Serialize;
 //}}}
 
-
 #[tokio::main]
 async fn main() -> Result<(), Error> {
 	let C_VER = env!("CARGO_PKG_VERSION");
@@ -351,39 +350,58 @@ async fn main() -> Result<(), Error> {
 //}}}
 
 // Load images{{{
-	let i_Wicon = Image::load_image("res/icon.png").expect("couldnt load icon image");
+	let res_Wicon = include_bytes!("res/icon.png");
+    let i_Wicon = Image::load_image_from_mem(".png", &res_Wicon.to_vec(), res_Wicon.len().try_into().unwrap()).unwrap();
 	rl.set_window_icon(i_Wicon);
-	let i_C = Image::load_image("res/C.png").expect("couldnt load C image");
-	let t_C = rl.load_texture_from_image(&thread, &i_C).expect("couldnt load C Texture");
-	let i_DP = Image::load_image("res/DP.png").expect("couldnt load DP image");
-	let t_DP = rl.load_texture_from_image(&thread, &i_DP).expect("couldnt load DP Texture");
-	let i_DPB = Image::load_image("res/DPB.png").expect("couldnt load DPB image");
-	let t_DPB = rl.load_texture_from_image(&thread, &i_DPB).expect("couldnt load DPB Texture");
-	let i_FB = Image::load_image("res/FB.png").expect("couldnt load FB image");
-	let t_FB = rl.load_texture_from_image(&thread, &i_FB).expect("couldnt load FB Texture");
-	let i_FBB = Image::load_image("res/FBB.png").expect("couldnt load FBB image");
-	let t_FBB = rl.load_texture_from_image(&thread, &i_FBB).expect("couldnt load FBB Texture");
-	let i_LB = Image::load_image("res/LB.png").expect("couldnt load LB image");
-	let t_LB = rl.load_texture_from_image(&thread, &i_LB).expect("couldnt load LB Texture");
-	let i_Lind = Image::load_image("res/Lind.png").expect("couldnt load Lind image");
-	let t_Lind = rl.load_texture_from_image(&thread, &i_Lind).expect("couldnt load Lind Texture");
-	let i_LT = Image::load_image("res/LT.png").expect("couldnt load LT image");
-	let t_LT = rl.load_texture_from_image(&thread, &i_LT).expect("couldnt load LT Texture");
-	let i_LTH = Image::load_image("res/LTH.png").expect("couldnt load LTH image");
-	let t_LTH = rl.load_texture_from_image(&thread, &i_LTH).expect("couldnt load LTH Texture");
-	let i_RB = Image::load_image("res/RB.png").expect("couldnt load RB image");
-	let t_RB = rl.load_texture_from_image(&thread, &i_RB).expect("couldnt load RB Texture");
-	let i_Rind = Image::load_image("res/Rind.png").expect("couldnt load Rind image");
-	let t_Rind = rl.load_texture_from_image(&thread, &i_Rind).expect("couldnt load Rind Texture");
-	let i_RT = Image::load_image("res/RT.png").expect("couldnt load RT image");
-	let t_RT = rl.load_texture_from_image(&thread, &i_RT).expect("couldnt load RT Texture");
-	let i_RTH = Image::load_image("res/RTH.png").expect("couldnt load RTH image");
-	let t_RTH = rl.load_texture_from_image(&thread, &i_RTH).expect("couldnt load RTH Texture");
-	let i_SL = Image::load_image("res/SL.png").expect("couldnt load SL image");
-	let t_SL = rl.load_texture_from_image(&thread, &i_SL).expect("couldnt load SL Texture");
-	let i_SR = Image::load_image("res/SR.png").expect("couldnt load SR image");
-	let t_SR = rl.load_texture_from_image(&thread, &i_SR).expect("couldnt load SR Texture");
+	let res_C = include_bytes!("res/C.png");
+    let i_C = Image::load_image_from_mem(".png", &res_C.to_vec(), res_C.len().try_into().unwrap());
+    let uwIC=i_C.unwrap();
+	let t_C = rl.load_texture_from_image(&thread, &(uwIC)).unwrap();
+	let res_DP = include_bytes!("res/DP.png");
+    let i_DP = Image::load_image_from_mem(".png", &res_DP.to_vec(), res_DP.len().try_into().unwrap());
+	let t_DP = rl.load_texture_from_image(&thread, &(i_DP.unwrap())).expect("couldnt load DP Texture");
+	let res_DPB = include_bytes!("res/DPB.png");
+    let i_DPB = Image::load_image_from_mem(".png", &res_DPB.to_vec(), res_DPB.len().try_into().unwrap());
+	let t_DPB = rl.load_texture_from_image(&thread, &(i_DPB.unwrap())).expect("couldnt load DPB Texture");
+	let res_FB = include_bytes!("res/FB.png");
+    let i_FB = Image::load_image_from_mem(".png", &res_FB.to_vec(), res_FB.len().try_into().unwrap());
+	let t_FB = rl.load_texture_from_image(&thread, &(i_FB.unwrap())).expect("couldnt load FB Texture");
+	let res_FBB = include_bytes!("res/FBB.png");
+    let i_FBB = Image::load_image_from_mem(".png", &res_FBB.to_vec(), res_FBB.len().try_into().unwrap());
+	let t_FBB = rl.load_texture_from_image(&thread, &(i_FBB.unwrap())).expect("couldnt load FBB Texture");
+	let res_LB = include_bytes!("res/LB.png");
+    let i_LB = Image::load_image_from_mem(".png", &res_LB.to_vec(), res_LB.len().try_into().unwrap());
+	let t_LB = rl.load_texture_from_image(&thread, &(i_LB.unwrap())).expect("couldnt load LB Texture");
+	let res_Lind = include_bytes!("res/Lind.png");
+    let i_Lind = Image::load_image_from_mem(".png", &res_Lind.to_vec(), res_Lind.len().try_into().unwrap());
+	let t_Lind = rl.load_texture_from_image(&thread, &(i_Lind.unwrap())).expect("couldnt load Lind Texture");
+	let res_LT = include_bytes!("res/LT.png");
+    let i_LT = Image::load_image_from_mem(".png", &res_LT.to_vec(), res_LT.len().try_into().unwrap());
+	let t_LT = rl.load_texture_from_image(&thread, &(i_LT.unwrap())).expect("couldnt load LT Texture");
+	let res_LTH = include_bytes!("res/LTH.png");
+    let i_LTH = Image::load_image_from_mem(".png", &res_LTH.to_vec(), res_LTH.len().try_into().unwrap());
+	let t_LTH = rl.load_texture_from_image(&thread, &(i_LTH.unwrap())).expect("couldnt load LTH Texture");
+	let res_RB = include_bytes!("res/RB.png");
+    let i_RB = Image::load_image_from_mem(".png", &res_RB.to_vec(), res_RB.len().try_into().unwrap());
+	let t_RB = rl.load_texture_from_image(&thread, &(i_RB.unwrap())).expect("couldnt load RB Texture");
+	let res_Rind = include_bytes!("res/Rind.png");
+    let i_Rind = Image::load_image_from_mem(".png", &res_Rind.to_vec(), res_Rind.len().try_into().unwrap());
+	let t_Rind = rl.load_texture_from_image(&thread, &(i_Rind.unwrap())).expect("couldnt load Rind Texture");
+	let res_RT = include_bytes!("res/RT.png");
+    let i_RT = Image::load_image_from_mem(".png", &res_RT.to_vec(), res_RT.len().try_into().unwrap());
+	let t_RT = rl.load_texture_from_image(&thread, &(i_RT.unwrap())).expect("couldnt load RT Texture");
+	let res_RTH = include_bytes!("res/RTH.png");
+    let i_RTH = Image::load_image_from_mem(".png", &res_RTH.to_vec(), res_RTH.len().try_into().unwrap());
+	let t_RTH = rl.load_texture_from_image(&thread, &(i_RTH.unwrap())).expect("couldnt load RTH Texture");
+	let res_SL = include_bytes!("res/SL.png");
+    let i_SL = Image::load_image_from_mem(".png", &res_SL.to_vec(), res_SL.len().try_into().unwrap());
+	let t_SL = rl.load_texture_from_image(&thread, &(i_SL.unwrap())).expect("couldnt load SL Texture");
+	let res_SR = include_bytes!("res/SR.png");
+    let i_SR = Image::load_image_from_mem(".png", &res_SR.to_vec(), res_SR.len().try_into().unwrap());
+	let t_SR = rl.load_texture_from_image(&thread, &(i_SR.unwrap())).expect("couldnt load SR Texture");
 //}}}
+    let iCWid=uwIC.width;
+    let iCHei=uwIC.height;
 
 	while !rl.window_should_close(){
 		if connSuccess{
@@ -401,7 +419,7 @@ async fn main() -> Result<(), Error> {
 			if rl.is_key_pressed(KeyboardKey::KEY_C){
 				compact = !compact;
 				if compact {
-					rl.set_window_size(i_C.width, i_C.height);
+					rl.set_window_size(iCWid, iCHei);
 					rl.set_window_title(&thread, "");
 				} else {
 					rl.set_window_size(width + exWid * if exEnable {1} else {0}, height);
@@ -535,7 +553,7 @@ LIndexDown: {}"
 					, shoulderLDown
 				), 5, 5, 10, Color::BLACK);
 				if exEnable {
-					let col2X=15+text::measure_text("RButtonPressed: 0.0000", 10)+5;
+					let col2X=15+measure_text("RButtonPressed: 0.0000", 10)+5;
 					d.draw_text(&format!(
 		"
 
@@ -577,21 +595,21 @@ RThumbY: {:.2}
 			DrawCont = DrawX + exWid * if exEnable {1} else {0};
 			DrawY=35;
 			let stringCurCont=&format!( "<- ({}) {} ->\n" ,conInd+1, conName );
-			d.draw_text(stringCurCont,DrawCont + i_C.width/2 - text::measure_text(stringCurCont, 10)/2, DrawY+i_C.height, 10,Color::BLACK);
+			d.draw_text(stringCurCont,DrawCont + iCWid/2 - measure_text(stringCurCont, 10)/2, DrawY+iCHei, 10,Color::BLACK);
 			let WID = width + exWid * if exEnable {1} else {0};
 			//d.draw_text(&format!( "{} extra parameters[TAB]\n[C] Compact mode\n[P] DPad To LStick: {}\n\n<- ({}) {} ->\n" ,if exEnable {"Hide"} else {"Show"}, if DPadToLS {"ON"} else {"OFF"}, conInd+1, conName ),DrawCont + 35, 5, 10,Color::BLACK);
 			let mut LineY = 0;
 			let str1 = &format!( "{} extra parameters [TAB]" ,if exEnable {"Hide"} else {"Show"});
-			d.draw_text(str1,WID - text::measure_text(str1,10) - 5, height - 10 - 2 - 12 * LineY, 10,Color::BLACK);
+			d.draw_text(str1,WID - measure_text(str1,10) - 5, height - 10 - 2 - 12 * LineY, 10,Color::BLACK);
 			LineY+=1;
 			let str1 = "Compact mode [C]";
-			d.draw_text(str1,WID - text::measure_text(str1,10) - 5, height - 10 - 2 - 12 * LineY, 10,Color::BLACK);
+			d.draw_text(str1,WID - measure_text(str1,10) - 5, height - 10 - 2 - 12 * LineY, 10,Color::BLACK);
 			LineY+=1;
 			let str1 = &format!( "DPad To LStick: {} [P]" ,if DPadToLS {"ON"} else {"OFF"});
-			d.draw_text(str1,WID - text::measure_text(str1,10) - 5, height - 10 - 2 - 12 * LineY, 10,Color::BLACK);
+			d.draw_text(str1,WID - measure_text(str1,10) - 5, height - 10 - 2 - 12 * LineY, 10,Color::BLACK);
 		}else{
 			let str1 = &format!("<- {} ->" ,conInd+1);
-			d.draw_text(str1,i_C.width/2-text::measure_text(str1, 10)/2, 0, 10,Color::BLACK);
+			d.draw_text(str1,iCWid/2-measure_text(str1, 10)/2, 0, 10,Color::BLACK);
 		}
 		d.draw_texture(&t_RT,DrawCont,DrawY + (rAxisT*8.0) as i32,Color{r:(255.0*(1.0 - rAxisT)) as u8,g:(255.0*(1.0 - rAxisT)) as u8,b:(255.0*(1.0 - rAxisT)) as u8,a:255});
 		d.draw_texture(&t_LT,DrawCont,DrawY + (lAxisT*8.0) as i32,Color{r:(255.0*(1.0 - lAxisT)) as u8,g:(255.0*(1.0 - lAxisT)) as u8,b:(255.0*(1.0 - lAxisT)) as u8,a:255});
@@ -759,18 +777,18 @@ RThumbY: {:.2}
 			d.clear_background(Color::WHITE);
 			d.draw_text(&format!( "FPS: {}" , current_fps), 5, 5, 10, Color::BLACK);
 			d.draw_rectangle_lines(
-				width/2 - (text::measure_text(str1, 10)+30)/2 - 4,
+				width/2 - (measure_text(str1, 10)+30)/2 - 4,
 				height/2 - 25 - 2,
-				(text::measure_text(str1, 10)+30)+8,
+				(measure_text(str1, 10)+30)+8,
 				55 + 4,
 				Color::BLACK);
 			d.draw_rectangle(
-				width/2 - (text::measure_text(str1, 10)+30)/2,
+				width/2 - (measure_text(str1, 10)+30)/2,
 				height/2 - 25,
-				(text::measure_text(str1, 10)+30),
+				(measure_text(str1, 10)+30),
 				55,
 				Color::BLACK);
-			d.draw_text(str1,width/2-text::measure_text(str1, 10)/2,height/2 - 20,10,Color::WHITE);
+			d.draw_text(str1,width/2-measure_text(str1, 10)/2,height/2 - 20,10,Color::WHITE);
 		}
 	}
 
